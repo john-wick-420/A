@@ -1,0 +1,88 @@
+
+**File Name**: `KeyBoardevents.java`
+**Package**: *no package needed* (keep it in default package)
+
+```java
+import java.applet.Applet; 
+import java.awt.Graphics; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.KeyListener; 
+
+/* 
+<applet code="KeyBoardevents.class" width="400" height="200"> 
+</applet> 
+*/ 
+
+public class KeyBoardevents extends Applet implements KeyListener { 
+    String str = "Press any key...";  // ✅ initialize the string
+
+    public void init() { 
+        addKeyListener(this); 
+        requestFocus(); // Important: ensures the applet receives keyboard input 
+    } 
+
+    public void keyPressed(KeyEvent e) { 
+        str = "Key Pressed"; 
+        showStatus("Key is Pressed"); 
+        repaint(); 
+    } 
+
+    public void keyReleased(KeyEvent e) { 
+        str = "Key Released"; 
+        showStatus("Key is Released"); 
+        repaint(); 
+    } 
+
+    public void keyTyped(KeyEvent e) { 
+        char key = e.getKeyChar(); 
+        str = "Key Typed: " + key; 
+        showStatus("Key is Typed"); 
+        repaint(); 
+    } 
+
+    public void paint(Graphics g) { 
+        g.drawString(str, 50, 50); 
+    } 
+}
+```
+
+---
+
+### ✅ Steps to Run in Eclipse
+
+> ⚠️ **Important**: Applets are not supported in modern browsers or Java 11+. Use **JDK 8 or earlier** to run Applets in Eclipse.
+
+#### 🛠 Set Up in Eclipse:
+
+1. **Use JDK 8**:
+
+   * Install and configure Eclipse to use JDK 8 (Window → Preferences → Java → Installed JREs).
+
+2. **Create a Java Project**:
+
+   * File → New → Java Project → Name it `AppletKeyboardEventsProject`.
+
+3. **Create a New Class**:
+
+   * Right-click on `src` → New → Class → Name: `KeyBoardevents` (no package).
+
+4. **Paste the Code** (above) into this class.
+
+5. **Create an HTML file** to run the applet:
+
+   * Right-click project → New → File → Name: `KeyBoardevents.html`
+
+```html
+<html>
+  <body>
+    <applet code="KeyBoardevents.class" width="400" height="200">
+    </applet>
+  </body>
+</html>
+```
+
+6. **Compile the class** (Ctrl + B or Project → Build Automatically).
+
+7. **Run the applet**:
+
+   * Right-click `KeyBoardevents.java` → **Run As → Java Applet** (only in Eclipse with Applet plugin).
