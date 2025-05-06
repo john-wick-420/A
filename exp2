@@ -1,0 +1,80 @@
+Exp2_MouseEvents.java`
+
+**File Name**: `Exp2_MouseEvents.java`
+**Package Name**: `package1`
+
+```java
+package package1; 
+import java.awt.*; 
+import java.awt.event.*; 
+
+public class Exp2_MouseEvents extends Frame implements MouseListener { 
+    private static final long serialVersionUID = 1L; 
+    String str; 
+    TextField tf; 
+
+    Exp2_MouseEvents() { 
+        setTitle("Mouse Action"); 
+        setSize(600, 300); 
+        setLayout(new FlowLayout()); 
+
+        tf = new TextField("Mouse Event"); 
+        tf.setPreferredSize(new Dimension(200, 30)); 
+        add(tf); 
+
+        addMouseListener(this); 
+        setVisible(true); 
+
+        addWindowListener(new WindowAdapter() { 
+            public void windowClosing(WindowEvent e) { 
+                dispose(); 
+            } 
+        }); 
+    } 
+
+    @Override 
+    public void mouseClicked(MouseEvent e) { 
+        str = "Mouse Clicked"; 
+        tf.setText(str); 
+    } 
+
+    @Override 
+    public void mouseEntered(MouseEvent e) { 
+        str = "Mouse Entered"; 
+        tf.setText(str); 
+    } 
+
+    @Override 
+    public void mouseExited(MouseEvent e) { 
+        str = "Mouse Exited"; 
+        tf.setText(str); 
+    } 
+
+    @Override 
+    public void mousePressed(MouseEvent e) { 
+        str = "Mouse Button Pressed"; 
+        tf.setText(str); 
+    } 
+
+    @Override 
+    public void mouseReleased(MouseEvent e) { 
+        str = "Mouse Button Released"; 
+        tf.setText(str); 
+    } 
+
+    public static void main(String[] args) { 
+        new Exp2_MouseEvents(); 
+    } 
+}
+
+### ✅ How to Run in Eclipse
+1. **Open Eclipse** and create a new Java Project:
+   **File → New → Java Project** → name it: `MouseEventsProject`
+2. **Create the Package**:
+   Right-click `src` → **New → Package** → name: `package1`
+3. **Create the Class**:
+   Right-click `package1` → **New → Class** → name: `Exp2_MouseEvents`
+   Make sure to check `public static void main(String[] args)` option
+4. **Paste the Corrected Code** above into the class file.
+5. **Run the Program**:
+   Right-click `Exp2_MouseEvents.java` → **Run As → Java Application**
