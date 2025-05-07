@@ -1,0 +1,128 @@
+### 📄 1) `Pallin.java` — RMI Interface
+
+```java
+import java.rmi.*;
+
+public interface Pallin extends Remote {
+    boolean pallindrome(String s) throws RemoteException;
+}
+```
+
+---
+
+### 📄 2) `PallinRemote.java` — Remote Implementation
+
+```java
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class PallinRemote extends UnicastRemoteObject implements Pallin {
+
+    // Constructor must declare RemoteException
+    protected PallinRemote() throws RemoteException {
+        super();
+    }
+
+    // Implementation of remote method
+    public boolean pallindrome(String s) {
+        String reversed = "";
+        int n = s.length();
+
+        for (int i = n - 1; i >= 0; i--) {
+            reversed += s.charAt(i);
+        }
+
+        return s.equalsIgnoreCase(reversed);
+    }
+}
+```
+
+---
+
+### 📄 3) `MyServer.java` — RMI Server
+
+```java
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+public class MyServer {
+    public static void main(String[] args) {
+        try {
+            System.setProperty("java.rmi.server.hostname", "localhost");
+
+            // Create remote object
+            Pallin stub = new PallinRemote();
+
+            // Start RMI registry and bind the object
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("PAL", stub);
+
+            System.out.println("Server Started...");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+---
+
+### 📄 4) `MyClient.java` — RMI Client
+
+```java
+import java.rmi.Naming;
+import java.util.Scanner;
+
+public class MyClient {
+    public static void main(String[] args) {
+        try {
+            // Look up the remote object using the name "PAL"
+            Pallin stub = (Pallin) Naming.lookup("rmi://localhost/PAL");
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter the string to check: ");
+            String input = scanner.nextLine();
+
+            if (stub.pallindrome(input)) {
+                System.out.println("The given string is a Palindrome.");
+            } else {
+                System.out.println("The given string is not a Palindrome.");
+            }
+
+            scanner.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+## Steps to Run in Eclipse or IDE
+
+### **Pre-Requisites**
+
+* Java JDK installed.
+* Java RMI is part of the JDK.
+* All 4 files should be in the same package (e.g., `palindromeRMI`) or default package.
+
+---
+
+### 📦 **In Eclipse**
+
+1. **Create New Java Project** → e.g., `PalindromeRMI`
+2. Create all 4 Java classes (`Pallin.java`, `PallinRemote.java`, `MyServer.java`, `MyClient.java`) in the `src` folder.
+3. **Ensure there are no package mismatches**. Either use default package or create one and import properly.
+4. **No need to run `rmic`** if using Java 9+ (dynamic proxy is used).
+
+---
+
+### ▶️ **To Run the Program**
+
+1. **Run `MyServer.java`** first to start the server and bind the remote object.
+2. **Run `MyClient.java`** next. It will:
+
+
+### Sample Output
+Client Input:
+Enter the string to check: Radar
+The given string is a Palindrome.
+
