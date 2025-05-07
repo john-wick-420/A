@@ -1,0 +1,112 @@
+Here's the **corrected version of both Java JDBC programs** and a step-by-step **guide to run them in Eclipse** or other IDEs. There are a few issues to address, including:
+
+* The JDBC driver class is deprecated: `com.mysql.jdbc.Driver` → **should be** `com.mysql.cj.jdbc.Driver`
+* Proper exception handling and formatting.
+* General code formatting for clarity.
+
+---
+
+## ✅ **1) Corrected: Retrieve Data from Student Table**
+
+```java
+package package2;
+
+import java.sql.*;
+
+public class JDBCHandling1 {
+    public static void main(String[] args) {
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/students", "root", "Pass@123");
+
+            // Create and execute SQL query
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM student");
+
+            // Process the result set
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt(1) + " " +
+                    rs.getString(2) + " " +
+                    rs.getInt(3) + " " +
+                    rs.getString(4));
+            }
+
+            // Close connection
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+---
+
+## ✅ **2) Corrected: Insert Data into Student Table**
+
+```java
+package package2;
+
+import java.sql.*;
+
+public class JDBCHandling2 {
+    public static void main(String[] args) {
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/students", "root", "Pass@123");
+
+            // Prepare the SQL insert statement
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO student VALUES (?, ?, ?, ?)");
+            stmt.setInt(1, 2);             // ID
+            stmt.setString(2, "Sumit");    // Name
+            stmt.setInt(3, 21);            // Age
+            stmt.setString(4, "C");        // Section
+
+            int j = stmt.executeUpdate();
+            System.out.println(j + " record(s) inserted successfully.");
+
+            // Close connection
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### ✅ **Pre-requisites:**
+
+1. **MySQL installed and running**
+2. **Database**: `students` must exist.
+3. **Table**: `student(id INT, name VARCHAR(50), age INT, section VARCHAR(10))`
+4. **MySQL Connector/J**: Download the latest version from:
+   [https://dev.mysql.com/downloads/connector/j/](https://dev.mysql.com/downloads/connector/j/)
+
+---
+
+### 📦 **In Eclipse:**
+
+1. Open Eclipse and create a **Java Project** (e.g., `JDBCExample`).
+2. Inside the `src` folder, create a **package**: `package2`
+3. Create two Java classes: `JDBCHandling1.java` (for retrieving), and `JDBCHandling2.java` (for inserting).
+4. **Add MySQL JDBC Driver to Build Path**:
+
+   * Right-click your project > **Build Path > Configure Build Path**
+   * Go to **Libraries > Add External JARs...**
+   * Select the downloaded `mysql-connector-java-<version>.jar`
+
+---
+
+### ▶️ **To Run:**
+
+1. **Run `JDBCHandling2.java`** to insert a row into the table.
+2. **Run `JDBCHandling1.java`** to retrieve and display data from the table.
