@@ -1,0 +1,122 @@
+
+### 📄 1) `Adder.java` — Interface
+
+```java
+import java.rmi.*;
+
+public interface Adder extends Remote {
+    int add(int x, int y) throws RemoteException;
+}
+```
+
+---
+
+### 📄 2) `AdderRemote.java` — Remote Implementation
+
+```java
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class AdderRemote extends UnicastRemoteObject implements Adder {
+
+    // Constructor must declare RemoteException
+    protected AdderRemote() throws RemoteException {
+        super();
+    }
+
+    public int add(int x, int y) {
+        return x + y;
+    }
+}
+```
+
+---
+
+### 📄 3) `MyServer.java` — RMI Server
+
+```java
+import java.rmi.*;
+import java.rmi.registry.*;
+
+public class MyServer {
+    public static void main(String[] args) {
+        try {
+            // Create and bind the remote object
+            Adder obj = new AdderRemote();
+
+            // Start RMI registry programmatically (optional if already started)
+            LocateRegistry.createRegistry(1099); // default RMI port
+
+            // Bind the object to the name "ADD"
+            Naming.rebind("ADD", obj);
+
+            System.out.println("Server Started...");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+```
+
+---
+
+### 📄 4) `MyClient.java` — RMI Client
+
+```java
+import java.rmi.*;
+
+public class MyClient {
+    public static void main(String[] args) {
+        try {
+            // Lookup the remote object by name
+            Adder obj = (Adder) Naming.lookup("rmi://localhost/ADD");
+
+            // Remote method invocation
+            int result = obj.add(34, 4);
+            System.out.println("Addition is: " + result);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+```
+
+---
+
+## ⚙️ Steps to Run RMI in Eclipse (or Command Line)
+
+### ✅ **Pre-Requisites:**
+
+* Java JDK must be installed.
+* `rmiregistry` should be available (comes with JDK).
+
+---
+
+### 📦 **In Eclipse:**
+
+1. **Create a new Java project**, e.g., `RMIAdder`.
+2. **Create all 4 classes** in the `src` folder or in a package like `rmiadder`.
+3. **Compile the Interface and Classes** (RMI requires stub generation in Java 8 or below; for Java 9+, dynamic stubs are used, so you may skip `rmic`).
+
+**Output Example:**
+
+Server:
+Server Started...
+Client:
+Addition is: 38
+
+
+### 📝 **If Using Java 8 or Below (requires rmic):**
+
+Run these in the command prompt or terminal:
+
+```bash
+javac *.java
+rmic AdderRemote
+start rmiregistry
+java MyServer
+java MyClient
+```
+
+> Ensure `rmiregistry` is run **in the same directory** where class files exist.
+
