@@ -1,0 +1,46 @@
+
+import java.net.*;
+
+public class Exp6_InetAddress {
+
+    public static void main(String[] args) throws UnknownHostException {
+
+        System.out.println("Details of My Machine using getLocalHost():");
+        InetAddress address = InetAddress.getLocalHost();
+        System.out.println(address);
+
+        System.out.println("\nDetails of My Machine using getByName():");
+        // Replace the hostname with your actual computer name or use 'localhost'
+        address = InetAddress.getByName("localhost");
+        System.out.println(address);
+
+        System.out.println("\nDetails of 'www.google.com' using getAllByName():");
+        InetAddress[] googleAddresses = InetAddress.getAllByName("www.google.com");
+        for (InetAddress googleAddr : googleAddresses)
+            System.out.println(googleAddr);
+
+        System.out.println("\nDetails of 'www.sinhgad.edu' using getAllByName():");
+        InetAddress[] sinhgadAddresses = InetAddress.getAllByName("www.sinhgad.edu");
+        for (InetAddress sinhgadAddr : sinhgadAddresses)
+            System.out.println(sinhgadAddr);
+    }
+}
+```
+
+
+## 🧪 Sample Output:
+Details of My Machine using getLocalHost():
+MyLaptopName/192.168.1.5
+Details of My Machine using getByName():
+localhost/127.0.0.1
+Details of 'www.google.com' using getAllByName():
+www.google.com/142.250.192.132
+www.google.com/142.250.192.100
+Details of 'www.sinhgad.edu' using getAllByName():
+www.sinhgad.edu/103.127.30.42--
+
+## 🧑‍💻 Steps to Run This in Eclipse:
+1. **Create a new Java project**, e.g., `InetAddressDemo`
+2. Create a class `Exp6_InetAddress`
+3. Paste the corrected code
+4. Run the program (no external libraries required)
