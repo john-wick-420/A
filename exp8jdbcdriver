@@ -1,0 +1,136 @@
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class Exp8_JDBC_CURD {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Replace with your actual DB credentials
+        String url = "jdbc:mysql://localhost:3306/jdbcdb";
+        String usr = "root";
+        String psw = "";  // If password is set, put it here
+
+        int rn;
+        String fn, ln;
+        char ctn;
+        int ch;
+
+        try {
+            // Updated driver class name
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url, usr, psw);
+            PreparedStatement pstmt;
+            ResultSet rs;
+
+            do {
+                System.out.println("\nSelect CRUD Operation:");
+                System.out.println(" 1. Create \n 2. Read \n 3. Update \n 4. Delete ");
+                System.out.print("Enter your choice: ");
+                ch = sc.nextInt();
+
+                switch (ch) {
+                    case 1: // Create
+                        System.out.print("Enter Roll No.: ");
+                        rn = sc.nextInt();
+                        System.out.print("Enter First Name: ");
+                        fn = sc.next();
+                        System.out.print("Enter Last Name: ");
+                        ln = sc.next();
+
+                        String create = "INSERT INTO classdata (RollNo, first_name, last_name) VALUES (?, ?, ?)";
+                        pstmt = con.prepareStatement(create);
+                        pstmt.setInt(1, rn);
+                        pstmt.setString(2, fn);
+                        pstmt.setString(3, ln);
+                        pstmt.executeUpdate();
+                        System.out.println("Data Inserted Successfully.");
+                        break;
+
+                    case 2: // Read
+                        String read = "SELECT * FROM classdata";
+                        pstmt = con.prepareStatement(read);
+                        rs = pstmt.executeQuery();
+
+                        System.out.println("\nRoll No.\tFirst Name\tLast Name");
+                        while (rs.next()) {
+                            System.out.printf(" %d\t\t%s\t\t%s\n",
+                                    rs.getInt("RollNo"),
+                                    rs.getString("first_name"),
+                                    rs.getString("last_name"));
+                        }
+                        break;
+
+                    case 3: // Update
+                        System.out.print("Enter first name of student to update roll number: ");
+                        fn = sc.next();
+                        System.out.print("Enter correct roll no.: ");
+                        rn = sc.nextInt();
+
+                        String update = "UPDATE classdata SET RollNo = ? WHERE first_name = ?";
+                        pstmt = con.prepareStatement(update);
+                        pstmt.setInt(1, rn);
+                        pstmt.setString(2, fn);
+                        int updated = pstmt.executeUpdate();
+                        if (updated > 0) {
+                            System.out.println("Data Updated Successfully.");
+                        } else {
+                            System.out.println("No record found with given first name.");
+                        }
+                        break;
+
+                    case 4: // Delete
+                        System.out.print("Enter roll no of student to delete record: ");
+                        rn = sc.nextInt();
+
+                        String delete = "DELETE FROM classdata WHERE RollNo = ?";
+                        pstmt = con.prepareStatement(delete);
+                        pstmt.setInt(1, rn);
+                        int deleted = pstmt.executeUpdate();
+                        if (deleted > 0) {
+                            System.out.println("Data Deleted Successfully.");
+                        } else {
+                            System.out.println("No record found with given roll number.");
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice. Please select 1-4.");
+                }
+
+                System.out.print("\nDo you want to continue (Y/N)? ");
+                ctn = sc.next().charAt(0);
+
+            } while (Character.toUpperCase(ctn) == 'Y');
+
+            con.close();
+            System.out.println("Program Terminated...!");
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+## 🧑‍💻 How to Run in Eclipse or IntelliJ:
+
+1. **Create new Java Project**.
+2. Add **MySQL JDBC Driver** (e.g., `mysql-connector-j-8.x.x.jar`) to your project’s build path.
+3. Create the MySQL **database and table** in `MySQL Workbench` or terminal:
+
+```sql
+CREATE DATABASE jdbcdb;
+
+USE jdbcdb;
+
+CREATE TABLE classdata (
+    RollNo INT(6),
+    first_name VARCHAR(255),
+    last_name VARCHAR(255)
+);
+```
+
+4. Update the `url`, `usr`, and `psw` in code if needed.
+5. Run the program.
