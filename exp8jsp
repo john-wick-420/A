@@ -1,0 +1,87 @@
+### 🔹 Step 2: Create a Dynamic Web Project
+1. Go to **File > New > Dynamic Web Project**.
+2. Enter **Project Name**: `JSPCubeExample`.
+3. Choose **Target Runtime**: Apache Tomcat.
+4. Click **Finish**.
+
+---
+
+### 🔹 Step 3: Add Your JSP Files
+
+1. Go to the **Project Explorer** in Eclipse.
+2. Navigate to: `JSPCubeExample > WebContent`
+3. Right-click on `WebContent` > **New > JSP File** > Name it `exp91.jsp`
+4. Paste the following code in `exp91.jsp`:
+
+```jsp
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="ISO-8859-1">  
+<title>AJP Exp-9</title>  
+</head>  
+<body>  
+<form action="exp92.jsp">  
+<label>Enter the number : </label>  
+<input type="text" name="un">  
+<input type="submit" value="Submit">  
+<br>  
+</form>  
+</body>  
+</html>  
+```
+
+5. Again, right-click `WebContent` > **New > JSP File** > Name it `exp92.jsp`
+6. Paste the second code in `exp92.jsp`:
+
+```jsp
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"  
+pageEncoding="ISO-8859-1"%>  
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="ISO-8859-1">  
+<title>Cube Result</title>  
+</head>  
+<body>  
+<h1>Welcome to JSP</h1>  
+<br>  
+<%  
+    String n = request.getParameter("un");  
+    int no = Integer.parseInt(n);  
+    out.println("Number Entered is : " + no);  
+    out.println("<br><br>");  
+    out.println("Cube of Number : " + (no * no * no));  
+%>  
+</body>  
+</html>  
+```
+
+---
+
+### 🔹 Step 4: Run the Project
+
+1. Right-click on the **project folder (JSPCubeExample)**.
+2. Click **Run As > Run on Server**.
+3. Choose the **Tomcat server**, click **Next**, then **Finish**.
+4. Browser should open: `http://localhost:8080/JSPCubeExample/exp91.jsp`
+
+---
+
+### ✅ Output:
+
+1. Enter a number in the textbox and click Submit.
+2. It redirects to `exp92.jsp` and shows:
+
+   * The number entered
+   * Cube of the number
+
+---
+
+### 📝 Notes:
+
+* If you get a **404 error**, ensure:
+
+  * JSP files are inside the `WebContent` directory.
+  * Project is deployed on the Tomcat server.
+  * Server is started (`Servers` tab at the bottom).
